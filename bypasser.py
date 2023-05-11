@@ -17,6 +17,7 @@ import os
 import ddl
 from cfscrape import create_scraper
 from uuid import uuid4
+from requests import session
 
 
 ##########################################################
@@ -173,6 +174,19 @@ def try2link_bypass(url):
 	
 	bypassed_url = client.post('https://try2link.com/links/go', headers=headers,data=data)
 	return bypassed_url.json()["url"]
+
+url = "https://pdisk.pro/xjy91c1v7er9"
+
+def pdisk(url):
+   client = session()
+   r = client.get(url).text
+   x = r.split("</center>")[-1]
+   y = x.split("</script>")[1]
+   z = y.split("-->")[0]
+   p = z.split("<!-- ")[-1]
+   return p
+   
+print(pdisk(url))
 		
 
 def try2link_scrape(url):
@@ -2144,6 +2158,11 @@ def shortners(url):
     elif "mdisklink.link" in url:
         print("entered mdisklink:",url)
         return mdisklink(url)
+
+    # pdisk
+    elif "pdisk.pro" in url:
+        print("entered pdisk:",url)
+        return pdisk(url)
 
     # rslinks
     elif "rslinks.net" in url:
