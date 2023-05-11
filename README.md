@@ -2,6 +2,9 @@
 
 a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot in Action [@BypassLinkBot](https://t.me/BypassLinkBot)
 
+
+### Deploy to Heroku
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/jegaa1/Link-Bypasser-Bot)
 ---
 
 ## Required Variables
