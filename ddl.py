@@ -12,6 +12,7 @@ from cfscrape import create_scraper
 from lk21 import Bypass
 from lxml import etree
 from requests import get
+from requests import session
 
 
 UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN","4a4ecf35552fea876da1d63e7fd000d2cb2fo")
@@ -28,7 +29,7 @@ ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net',
 'fembed.net', 'fembed.com', 'femax20.com', 'fcdn.stream', 'feurl.com', 'layarkacaxxi.icu',
 'naniplay.nanime.in', 'naniplay.nanime.biz', 'naniplay.com', 'mm9842.com','anonfiles.com', 
 'hotfile.io', 'bayfiles.com', 'megaupload.nz', 'letsupload.cc','filechan.org', 'myfile.is', 
-'vshare.is', 'rapidshare.nu', 'lolabits.se','openload.cc', 'share-online.is', 'upvid.cc']
+'vshare.is', 'rapidshare.nu', 'lolabits.se','openload.cc', 'share-online.is', 'upvid.cc', 'pdisk.pro']
 
 
 def is_share_link(url):
@@ -139,6 +140,19 @@ def mdisk(url):
     id = url.split("/")[-1]
     URL = f'https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={id}'
     return get(url=URL, headers=header).json()['source']
+
+url = "https://pdisk.pro/xjy91c1v7er9"
+
+def pdisk(url):
+   client = session()
+   r = client.get(url).text
+   x = r.split("</center>")[-1]
+   y = x.split("</script>")[1]
+   z = y.split("-->")[0]
+   p = z.split("<!-- ")[-1]
+   return p
+   
+print(pdisk(url))
 
 
 def yandex_disk(url: str) -> str:
