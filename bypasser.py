@@ -133,7 +133,7 @@ def scrapeIndex(url, username="none", password="none"):
 ##############################################################
 # tnlink
 
-def tnlink(url):
+def tnshort(url):
     client = requests.session()
     DOMAIN = "https://go.tnshort.net/"
     url = url[:-1] if url[-1] == '/' else url
@@ -170,6 +170,45 @@ def kpslink(url):
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try: return r.json()['url']
     except: return "Something went wrong :("
+	
+def vllinks(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "https://vllinks.in.net"
+    url = url[:-1] if url[-1] == '/' else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}/{code}"
+    ref = "https://blog.vllinks.in/"
+    h = {"referer": ref}
+    resp = client.get(final_url,headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(5)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try: return r.json()['url']
+    except: return "Something went wrong :("
+	
+def urlshorten(url):
+    client = requests.session()
+    DOMAIN = "https://urlshorten.in/"
+    url = url[:-1] if url[-1] == '/' else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}/{code}"
+    ref = "https://lslink.in/"
+    h = {"referer": ref}
+    while len(client.cookies) == 0:
+        resp = client.get(final_url,headers=h)
+        time.sleep(2)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(8)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try: return r.json()['url']
+    except: return "Something went wrong :("
+
 ###############################################################
 # psa 
 
@@ -1843,6 +1882,40 @@ def mdiskpro(url):
         return r.json()['url']
     except: return "Something went wrong :("
 
+# omegalinks
+
+def omegalinks(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "https://omegalinks.in"
+    ref = "https://m.meclipstudy.in/"
+    h = {"referer": ref}
+    resp = client.get(url,headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(8)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
+
+
+def omegalinks1(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "https://tera-box.com"
+    ref = "https://m.meclipstudy.in/"
+    h = {"referer": ref}
+    resp = client.get(url,headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(8)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
 
 #####################################################################################################
 # tnshort
@@ -2155,10 +2228,21 @@ def shortners(url):
         print("entered linkbnao:",url)
         return linkbnao(url)
 
+    elif "urlshorten.in" in url:
+        print("entered urlshorten:",url)
+        return urlshorten(url)
     # omegalinks
     elif "mdisk.pro" in url:
         print("entered mdiskpro:",url)
         return mdiskpro(url)
+
+    elif "omegalinks" in url:
+        print("entered mdiskpro:",url)
+        return omegalinks(url)
+
+    elif "omegalinks1" in url:
+        print("entered mdiskpro:",url)
+        return omegalinks1(url)
 
     # tnshort
     elif "tnshort.in" in url:
@@ -2187,7 +2271,13 @@ def shortners(url):
 
         return kpslink(url)
 
+#vllinks
 
+    elif "vllinks.in.net" in url:
+
+        print("entered kpslink:",url)
+
+        return vllinks(url)
 
 
     # rslinks
